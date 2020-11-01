@@ -1,0 +1,71 @@
+// implementation of quicksort algorithm
+
+
+function partition_l(Arr, low, high) { //create a partition smaller|pivot|bigger -> lomuto style
+
+    let p = Arr[high]; // initialize pivot to the last element
+    let i = low; // i is set to first element of the list.
+
+    for (var j = low; j < high; j++) { // bring smaller than pivot elements to the front and take bigger to the last.
+        if (Arr[j] < p) {
+            let temp = Arr[i];
+            Arr[i] = Arr[j];
+            Arr[j] = temp;
+            i++;
+        }
+
+    }
+    // make the array orderly,bring pivot to its true position.
+    let t2 = Arr[i];
+    Arr[i] = Arr[high];
+    Arr[high] = t2;
+    return i;
+
+}
+
+function quicksort_l(Arr, low, high) {
+    if (low < high) {
+        let p = partition_l(Arr, low, high);
+        quicksort_l(Arr, low, p - 1);
+        quicksort_l(Arr, p + 1, high)
+
+        return Arr;
+    }
+}
+
+function partition_h(Arr, low, high) { // partition = [lower_elements|pivot|higher_elem] -> Hoare Style
+    let pivot = Arr[Math.floor((high + low) / 2)];
+    let i = low;
+    let j = high;
+
+    while (true) {
+        while (Arr[i] < pivot) { // go foreward until an element needs to be moved to other side of pivot
+            i++;
+        }
+        while (Arr[j] > pivot) { // go backwards until an element needs to be moved to front side of pivot
+            j--;
+        }
+        if (i >= j) { // if partition has ended return index
+            return j;
+        }
+        let temp = Arr[i];
+        Arr[i] = Arr[j];
+        Arr[j] = temp;
+        i++;
+        j--;
+    }
+}
+
+function quicksort_h(Arr, low, high) { // divide and conquer
+    if (low < high) {
+        let p = partition_h(Arr, low, high);
+        quicksort_h(Arr, low, p);
+        quicksort_h(Arr, p + 1, high)
+    }
+    return Arr;
+}
+
+let Arr = [1, 2, 6, 4, 7, 4, 3, 1, 8, 2, 5];
+console.log("intial array = " + Arr);
+console.log("After quicksort lomuto style= " + quicksort_l(Arr, 0, 10));
+console.log("After quicksort hoare style= " + quicksort_h(Arr, 0, 10));
